@@ -83,6 +83,22 @@ namespace Ncqrs.Eventing.Sourcing
             return handled;
         }
 
+		/// <summary>
+		/// Type of supported event to handle
+		/// </summary>
+		public Type EventType
+		{
+			get { return _eventTypeThreshold; }
+		}
+
+		/// <summary>
+		/// Related target entity id. Default value if target is AggregateRoot
+		/// </summary>
+		public Guid EntityId
+		{
+			get { return default(Guid); }
+		}
+
         /// <summary>
         ///   This method holds all the objects invariants.
         /// </summary>
