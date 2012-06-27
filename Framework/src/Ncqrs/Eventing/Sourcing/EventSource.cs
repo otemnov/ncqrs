@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
-using System.Security.Cryptography;
-using System.Text;
 using Ncqrs.Domain;
 using Ncqrs.Eventing.Sourcing.Snapshotting;
 
@@ -71,7 +69,7 @@ namespace Ncqrs.Eventing.Sourcing
 		/// A list that contains all the event handlers.
 		/// </summary>
 		[NonSerialized]
-		private readonly Dictionary<Guid, ISourcedEventHandler> _eventHandlers = new Dictionary<Guid, ISourcedEventHandler>();
+		private readonly Dictionary<string, ISourcedEventHandler> _eventHandlers = new Dictionary<string, ISourcedEventHandler>();
 		[NonSerialized]
 		private readonly IUniqueIdentifierGenerator _idGenerator;
 
@@ -143,7 +141,7 @@ namespace Ncqrs.Eventing.Sourcing
 		internal protected void RegisterHandler(ISourcedEventHandler handler)
 		{
 			Contract.Requires<ArgumentNullException>(handler != null, "The handler cannot be null.");
-			var key = GetHashSum(handler);
+			string key = GetHashSum(handler);
 			_eventHandlers[key] = handler;
 		}
 
@@ -177,26 +175,18 @@ namespace Ncqrs.Eventing.Sourcing
 				throw new EventNotHandledException(evnt);
 		}
 
-		protected Guid GetHashSum(object evnt)
+		protected string GetHashSum(object evnt)
 		{
 			var type = evnt.GetType().ToString();
 			var sourcedEvent = evnt as IEntitySourcedEvent;
 			if (sourcedEvent != null)
-				return GetHashSum(type + sourcedEvent.EntityId.ToString());
-			return GetHashSum(type + Guid.Empty.ToString());
+				return type + sourcedEvent.EntityId.ToString();
+			return type + default(Guid).ToString();
 		}
 
-		protected Guid GetHashSum(ISourcedEventHandler handler)
+		protected string GetHashSum(ISourcedEventHandler handler)
 		{
-			return GetHashSum(handler.EventType.ToString() + handler.EntityId.ToString());
-		}
-
-		private Guid GetHashSum(string source)
-		{
-			var stringbytes = Encoding.UTF8.GetBytes(source);
-			var hashedBytes = new SHA1CryptoServiceProvider().ComputeHash(stringbytes);
-			Array.Resize(ref hashedBytes, 16);
-			return new Guid(hashedBytes);
+			return handler.EventType.ToString() + handler.EntityId.ToString();
 		}
 
 		internal protected void ApplyEvent(object evnt)
