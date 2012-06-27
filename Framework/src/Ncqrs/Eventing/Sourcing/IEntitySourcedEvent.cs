@@ -2,8 +2,8 @@
 
 namespace Ncqrs.Eventing.Sourcing
 {
-    public interface IEntitySourcedEvent
-    {
-        Guid EntityId { get;}
-    }
+	public interface IEntitySourcedEvent
+	{
+		Guid EntityId { get; set; }
+	}
 }

@@ -53,7 +53,7 @@ namespace Ncqrs.Domain
             _parent.RegisterHandler(handler);
         }
 
-        protected void ApplyEvent(SourcedEntityEvent evnt)
+		protected void ApplyEvent(IEntitySourcedEvent evnt)
         {
             // Make sure this event is not already
             // owned by another entity.
@@ -64,7 +64,7 @@ namespace Ncqrs.Domain
             _parent.ApplyEvent(evnt);
         }
 
-		private void ValidateEventOwnership(SourcedEntityEvent evnt)
+		private void ValidateEventOwnership(IEntitySourcedEvent evnt)
         {
             if (evnt.EntityId != SourcedEntityEvent.UndefinedEntityId)
             {
