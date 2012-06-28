@@ -141,21 +141,20 @@ namespace Ncqrs.Eventing.Sourcing
 		internal protected void RegisterHandler(ISourcedEventHandler handler)
 		{
 			Contract.Requires<ArgumentNullException>(handler != null, "The handler cannot be null.");
-			string key = GetHashSum(handler);
-			_eventHandlers[key] = handler;
+			string key = getKey(handler);
+			_eventHandlers.Add(key, handler);
 		}
 
 		protected virtual void HandleEvent(object evnt)
 		{
 			Contract.Requires<ArgumentNullException>(evnt != null, "The Event cannot be null.");
-			Boolean handled = false;
 
 			// Get a copy of the handlers because an event
 			// handler can register a new handler. This will
 			// cause the _eventHandlers list to be modified.
 			// And modification while iterating it not allowed.
-			var key = GetHashSum(evnt);
-			ISourcedEventHandler handler = null;
+			string key = getKey(evnt);
+			ISourcedEventHandler handler;
 			if (!_eventHandlers.TryGetValue(key, out handler))
 			{
 				//may be this is legacy entity event
@@ -167,26 +166,29 @@ namespace Ncqrs.Eventing.Sourcing
 				throw new ApplicationException("Couldn't find handler");
 			}
 
-			Log.DebugFormat("Applying handler {0} of event source {1} to event {2}",
-							handler, this, evnt);
-			handled |= handler.HandleEvent(evnt);
-
+			Log.DebugFormat("Applying handler {0} of event source {1} to event {2}", handler, this, evnt);
+			bool handled = handler.HandleEvent(evnt);
 			if (!handled)
 				throw new EventNotHandledException(evnt);
 		}
 
-		protected string GetHashSum(object evnt)
+		private string getKey(object evnt)
 		{
-			var type = evnt.GetType().ToString();
+			var type = evnt.GetType();
 			var sourcedEvent = evnt as IEntitySourcedEvent;
 			if (sourcedEvent != null)
-				return type + sourcedEvent.EntityId.ToString();
-			return type + default(Guid).ToString();
+				return getKey(type, sourcedEvent.EntityId);
+			return getKey(type, Guid.Empty);
 		}
 
-		protected string GetHashSum(ISourcedEventHandler handler)
+		private string getKey(ISourcedEventHandler handler)
 		{
-			return handler.EventType.ToString() + handler.EntityId.ToString();
+			return getKey(handler.EventType, handler.EntityId);
+		}
+
+		private string getKey(Type eventType, Guid entityId)
+		{
+			return eventType + entityId.ToString();
 		}
 
 		internal protected void ApplyEvent(object evnt)
@@ -211,7 +213,6 @@ namespace Ncqrs.Eventing.Sourcing
 
 		private long GetNextSequence()
 		{
-
 			// 628426 31 Feb 2011 - the following absolutely needed to ensure correct sequencing, as incorrect versions were being passed to event store
 			// TODO: I don't think this should stay here
 			if (_initialVersion > 0 && _currentVersion == 0)
