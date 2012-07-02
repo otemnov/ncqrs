@@ -7,23 +7,9 @@ namespace Ncqrs.Domain
     /// <summary>
     /// The abstract concept of an entity -- an object living inside an aggregate with own thread of identity.
     /// </summary>
-    [Serializable]
-    public abstract class Entity : Entity<AggregateRoot>
-    {
-        protected Entity(AggregateRoot parent, Guid entityId)
-            : base(parent, entityId)
-        {
-        }
-    }
-
-    /// <summary>
-    /// The abstract concept of an entity -- an object living inside an aggregate with own thread of identity.
-    /// </summary>
 	[Serializable]
     public abstract class Entity<TAggregateRoot> where TAggregateRoot : AggregateRoot
     {
-        private readonly Guid _entityId;
-
         [NonSerialized]
         private TAggregateRoot _parent;
 
@@ -32,20 +18,17 @@ namespace Ncqrs.Domain
             get { return _parent; }
         }
 
-        /// <summary>
-        /// Gets the unique identifier for this entity. This identifier
-        /// is set on construction and should not be changed. The creator
-        /// of this entity is responsible for providing the right identfier.
-        /// </summary>
-        public Guid EntityId
-        {
-            get { return _entityId; }
-        }
+    	/// <summary>
+    	/// Gets the unique identifier for this entity. This identifier
+    	/// is set on construction and should not be changed. The creator
+    	/// of this entity is responsible for providing the right identfier.
+    	/// </summary>
+		public Guid EntityId { get; set; }
 
-        protected Entity(TAggregateRoot parent, Guid entityId)
+    	protected Entity(TAggregateRoot parent, Guid entityId)
         {
             _parent = parent;
-            _entityId = entityId;
+			EntityId = entityId;
         }
 
         protected void RegisterHandler(ISourcedEventHandler handler)

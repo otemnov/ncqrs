@@ -1,18 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ncqrs.Eventing.Sourcing;
 using Ncqrs.Eventing.Sourcing.Mapping;
 
 namespace Ncqrs.Domain
 {
-	[Serializable]
-	public abstract class EntityMappedByConvention : EntityMappedByConvention<AggregateRoot>
-	{
-		protected EntityMappedByConvention(AggregateRoot parent, Guid entityId)
-			: base(parent, entityId)
-		{
-		}
-	}
-
 	[Serializable]
 	public abstract class EntityMappedByConvention<TAggregateRoot> : Entity<TAggregateRoot> where TAggregateRoot : AggregateRoot
 	{
@@ -31,11 +23,10 @@ namespace Ncqrs.Domain
 		private void internalAssignRoot(TAggregateRoot root)
 		{
 			var mapping = new ConventionBasedEventHandlerMappingStrategy();
-			var handlers = mapping.GetEventHandlers(this);
+			IEnumerable<ISourcedEventHandler> handlers = mapping.GetEventHandlers(this);
 			foreach (var directHandler in handlers)
 			{
 				var handler = new EntityThresholdedDomainEventHandlerWrapper(EntityId, GetType(), directHandler, directHandler.EventType);
-
 				root.RegisterHandler(handler);
 			}
 		}

@@ -35,7 +35,7 @@ namespace Ncqrs.Tests.Domain
             }
         }
 
-        public class Order : EntityMappedByConvention
+        public class Order : EntityMappedByConvention<AggregateRoot>
         {
             private readonly List<OrderLine> _lines = new List<OrderLine>();
 
