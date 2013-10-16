@@ -11,19 +11,19 @@ namespace Ncqrs.Eventing
         private readonly long _fromVersion;
         private readonly long _toVersion;
         private readonly Guid _sourceId;
-        private readonly List<CommittedEvent> _events = new List<CommittedEvent>();
+        private readonly List<CommittedEvent> _events;
 
-        public long FromVersion
+        public virtual long FromVersion
         {
             get { return _fromVersion; }
         }
 
-        public long ToVersion
+		public virtual long ToVersion
         {
             get { return _toVersion; }
         }
 
-        public bool IsEmpty
+		public virtual bool IsEmpty
         {
             get { return _events.Count == 0; }
         }
@@ -35,10 +35,10 @@ namespace Ncqrs.Eventing
 
         public long CurrentSourceVersion
         {
-            get { return _toVersion; }
+            get { return ToVersion; }
         }
 
-        public IEnumerator<CommittedEvent> GetEnumerator()
+		public virtual IEnumerator<CommittedEvent> GetEnumerator()
         {
             return _events.GetEnumerator();
         }
@@ -62,23 +62,18 @@ namespace Ncqrs.Eventing
         {
             _sourceId = sourceId;
 
-            if(events != null) _events = new List<CommittedEvent>(events);
-
-            ValidateEventInformation(_events);
-            
+	        _events = events == null ? new List<CommittedEvent>() : new List<CommittedEvent>(events);
             if (_events.Count > 0)
             {
-                var first = _events.First();
+				ValidateEventInformation(_events);
+                CommittedEvent first = _events.First();
                 _fromVersion = first.EventSequence;
-
-                var last = _events.Last();
+                CommittedEvent last = _events.Last();
                 _toVersion = last.EventSequence;
-
-                _toVersion = _events.OrderByDescending(evnt => evnt.EventSequence).First().EventSequence;
             }
         }
 
-        private void ValidateEventInformation(IEnumerable<CommittedEvent> events)
+		private void ValidateEventInformation(List<CommittedEvent> events)
         {
             // An empty event stream is allowed.
             if (events == null || events.IsEmpty()) return;
@@ -124,27 +119,6 @@ namespace Ncqrs.Eventing
                 throw new ArgumentException("events", msg);
             }
         }
-
-        //    if(events.IsEmpty())
-        //        return;
-
-        //    var first = events.First();
-
-        //    var eventCounter = 0;
-        //    var eventSourceId = first.EventSourceId;
-        //    var currentEventSequence = first.EventSequence;
-
-        //    foreach(var evnt in events.Skip(1))
-        //    {
-        //        if(evnt.EventSourceId != eventSourceId)
-        //        {
-        //            var msg =
-        //                String.Format("Event {0} did not contain the expected event source id {1}. "+
-        //                    "Actual value was {2}.",
-        //                    evnt.EventIdentifier, eventSourceId, evnt.EventSourceId);
-        //            throw new ArgumentOutOfRangeException("events", msg);
-        //        }
-        //}
     }
 
     [Serializable]

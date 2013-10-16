@@ -1,15 +1,34 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{086A35E7-E3B8-449E-83A3-25A540148B86}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{84A6E29C-BC29-4348-BA51-4218E75CED1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyNotes", "MyNotes", "{8478A8FA-7295-4098-866D-47F458C766C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NSBSample", "NSBSample", "{963C0C88-DCB6-4944-94EC-728CBB3C2778}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersioningSample", "VersioningSample", "{E7C55656-EC73-4802-9ED4-1BC321C86ABA}"
+	ProjectSection(SolutionItems) = preProject
+		Samples\VersioningSample\CreateEventStore.sql = Samples\VersioningSample\CreateEventStore.sql
+		Samples\VersioningSample\readme.txt = Samples\VersioningSample\readme.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9961F987-2519-493C-83E6-5E8AFCD32291}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		Ncqrs.Master.vsmdi = Ncqrs.Master.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs", "Framework\src\Ncqrs\Ncqrs.csproj", "{01F84441-80D3-49B4-AB18-96894ACB2F90}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.Spec", "Framework\src\Ncqrs.Spec\Ncqrs.Spec.csproj", "{AA90754B-CA47-429E-BDC8-2A83E94179B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.Tests", "Framework\src\Ncqrs.Tests\Ncqrs.Tests.csproj", "{50E98525-806C-41E3-9366-D36B1CD936D0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Framework", "Framework", "{086A35E7-E3B8-449E-83A3-25A540148B86}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.Config.StructureMap", "Extensions\src\Ncqrs.Config.StructureMap\Ncqrs.Config.StructureMap.csproj", "{2558F4AD-8D5D-43A2-AAEA-75B966F9B4DE}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -56,10 +75,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.NServiceBus", "Extens
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.NServiceBus.Tests", "Extensions\src\Ncqrs.NServiceBus.Tests\Ncqrs.NServiceBus.Tests.csproj", "{86D87653-EC64-4388-A5F7-2F64F690C5F5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{84A6E29C-BC29-4348-BA51-4218E75CED1A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyNotes", "MyNotes", "{8478A8FA-7295-4098-866D-47F458C766C8}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "Samples\MyNotes\src\Commands\Commands.csproj", "{CF0635EB-DFA4-4E82-B245-A0F125183E08}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Samples\MyNotes\src\Domain\Domain.csproj", "{BD0344CC-E61E-4BC6-8782-0AC0390F48FD}"
@@ -75,8 +90,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReadModel", "Samples\MyNotes\src\ReadModel\ReadModel.csproj", "{D01CE8F6-800E-44CC-886B-F862B10E1396}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "Samples\NSBSample\Client\Client.csproj", "{97B83914-6A1A-4EF4-AE40-F5CE4FA48FA8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NSBSample", "NSBSample", "{963C0C88-DCB6-4944-94EC-728CBB3C2778}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Commands", "Samples\NSBSample\Commands\Commands.csproj", "{5EF85227-BF8E-4A19-8496-2A3BB500E27C}"
 EndProject
@@ -96,12 +109,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Samples\NSBSample
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppV1", "Samples\VersioningSample\src\Appv1\AppV1.csproj", "{ECE2E2E8-648C-4561-82A0-9A1D6A2D4645}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "VersioningSample", "VersioningSample", "{E7C55656-EC73-4802-9ED4-1BC321C86ABA}"
-	ProjectSection(SolutionItems) = preProject
-		Samples\VersioningSample\CreateEventStore.sql = Samples\VersioningSample\CreateEventStore.sql
-		Samples\VersioningSample\readme.txt = Samples\VersioningSample\readme.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppV2", "Samples\VersioningSample\src\AppV2\AppV2.csproj", "{7A3419B2-588C-416B-A9F3-BFAE77C22D77}"
 EndProject
@@ -145,13 +152,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.Eventing.Storage.WindowsAzure", "Extensions\src\Ncqrs.Eventing.Storage.WindowsAzure\Ncqrs.Eventing.Storage.WindowsAzure.csproj", "{6535AFF3-E730-4916-9CF6-1186F3C1DAFE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.Eventing.Storage.WindowsAzure.Tests", "Extensions\src\Ncqrs.Eventing.Storage.WindowsAzure.Tests\Ncqrs.Eventing.Storage.WindowsAzure.Tests.csproj", "{693DEFC5-355C-4F62-B424-3119046B5F6D}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9961F987-2519-493C-83E6-5E8AFCD32291}"
-	ProjectSection(SolutionItems) = preProject
-		Local.testsettings = Local.testsettings
-		Ncqrs.Master.vsmdi = Ncqrs.Master.vsmdi
-		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ncqrs.Config.Ninject", "Extensions\src\Ncqrs.Config.Ninject\Ncqrs.Config.Ninject.csproj", "{E7EF81C1-4896-446D-B761-3BDA111E09D1}"
 EndProject
@@ -682,10 +682,11 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{01F84441-80D3-49B4-AB18-96894ACB2F90} = {086A35E7-E3B8-449E-83A3-25A540148B86}
 		{AA90754B-CA47-429E-BDC8-2A83E94179B7} = {086A35E7-E3B8-449E-83A3-25A540148B86}
 		{50E98525-806C-41E3-9366-D36B1CD936D0} = {086A35E7-E3B8-449E-83A3-25A540148B86}
-		{01F84441-80D3-49B4-AB18-96894ACB2F90} = {086A35E7-E3B8-449E-83A3-25A540148B86}
 		{D300CE86-E8DF-4E9A-9FEB-A2355661A9F2} = {086A35E7-E3B8-449E-83A3-25A540148B86}
+		{9961F987-2519-493C-83E6-5E8AFCD32291} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{2558F4AD-8D5D-43A2-AAEA-75B966F9B4DE} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{99BE6129-C5C4-45A5-94AB-0ADEA0A6AD53} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{629CA40F-74CF-4040-8CAD-5EFEDD06BCFE} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
@@ -709,7 +710,6 @@ Global
 		{A2ADE0B3-D3C0-4D6B-8701-C0F5E509A69A} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{6535AFF3-E730-4916-9CF6-1186F3C1DAFE} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{693DEFC5-355C-4F62-B424-3119046B5F6D} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
-		{9961F987-2519-493C-83E6-5E8AFCD32291} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{E7EF81C1-4896-446D-B761-3BDA111E09D1} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{7F74C778-717A-4395-BA6B-14335E6C9753} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
 		{73EFEBCC-4B62-470B-A27B-D846359FF600} = {4EAA1C9A-E268-4BA7-A73E-940E3D769C3A}
