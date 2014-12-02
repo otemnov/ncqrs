@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using System.Reflection;
 using System.Transactions;
 
@@ -14,6 +16,7 @@ namespace Ncqrs.Eventing.ServiceModel.Bus
 			new Dictionary<Type, List<Action<PublishedEvent>>>();
 
 		private readonly bool _useTransactionScope;
+		private static readonly Action<PublishedEvent>[] NoHandlersForEvent = new Action<PublishedEvent>[0];
 
 		/// <summary>
 		///     Creates new <see cref="InProcessEventBus" /> instance that wraps publishing to
@@ -97,7 +100,12 @@ namespace Ncqrs.Eventing.ServiceModel.Bus
 		protected IReadOnlyCollection<Action<PublishedEvent>> GetHandlersForEvent(IPublishableEvent eventMessage)
 		{
 			Type dataType = eventMessage.Payload.GetType();
-			return _handlerRegister[dataType].AsReadOnly();
+			List<Action<PublishedEvent>> handlersForEvent;
+			if (_handlerRegister.TryGetValue(dataType, out handlersForEvent))
+			{
+				return handlersForEvent.AsReadOnly();
+			}
+			return NoHandlersForEvent;
 		}
 
 		public void RegisterHandler<TEvent>(IEventHandler<TEvent> handler)
