@@ -1,39 +1,85 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using Ncqrs.Eventing.Sourcing.Snapshotting;
 
 namespace Ncqrs.Domain
 {
-    internal static class AggregateRootExtensions
-    {
-        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+	internal static class AggregateRootExtensions
+	{
+		private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static Type GetSnapshotInterfaceType(this Type aggregateType)
-        {
-            // Query all ISnapshotable interfaces. We only allow only
-            // one ISnapshotable interface per aggregate root type.
-            var snapshotables = from i in aggregateType.GetInterfaces()
-                                where i.IsGenericType && i.GetGenericTypeDefinition() == typeof(ISnapshotable<>)
-                                select i;
+		private static readonly ConcurrentDictionary<Type, Type> SnapshotInterfaceTypes = new ConcurrentDictionary<Type, Type>();
+		private static readonly ConcurrentDictionary<Type, SnapshotMethods> SnapshotCreateMethods = new ConcurrentDictionary<Type, SnapshotMethods>();
 
-            // Aggregate does not implement any ISnapshotable interface.
-            if (snapshotables.Count() == 0)
-            {
-                Log.DebugFormat("No snapshot interface found on aggregate root {0}.", aggregateType.FullName);
-                return null;
-            }
-            // Aggregate does implement multiple ISnapshotable interfaces.
-            if (snapshotables.Count() > 1)
-            {
-                Log.WarnFormat("Aggregate root {0} contains multiple snapshot interfaces while only one is allowed.", aggregateType.FullName);
-                return null;
-            }
+		public static Type GetSnapshotInterfaceType(this Type aggregateType)
+		{
+			Type snapshotInterfaceType;
+			if (!SnapshotInterfaceTypes.TryGetValue(aggregateType, out snapshotInterfaceType))
+			{
+				Type[] snapshotables = (from i in aggregateType.GetInterfaces()
+					where i.IsGenericType && i.GetGenericTypeDefinition() == typeof (ISnapshotable<>)
+					select i).ToArray();
+				if (snapshotables.Any())
+				{
+					if (snapshotables.Count() > 1)
+					{
+						Log.WarnFormat("Aggregate root {0} contains multiple snapshot interfaces while only one is allowed.",
+							aggregateType.FullName);
+					}
+					else
+					{
+						snapshotInterfaceType = snapshotables[0];
+					}
+				}
+				SnapshotInterfaceTypes[aggregateType] = snapshotInterfaceType;
+			}
+			return snapshotInterfaceType;
+		}
 
-            var snapshotableInterfaceType = snapshotables.Single();
-            Log.DebugFormat("Found snapshot interface {0} on aggregate root {1}.", snapshotableInterfaceType.FullName, aggregateType.FullName);
+		public static MethodInfo GetSnapshotCreateMethod(this Type aggregateType)
+		{
+			SnapshotMethods snapshotMethods = getSnapshotMethods(aggregateType);
+			return snapshotMethods.CreateMethod;
+		}
 
-            return snapshotableInterfaceType;
-        }
-    }
+		public static MethodInfo GetSnapshotRestoreMethod(this Type aggregateType)
+		{
+			SnapshotMethods snapshotMethods = getSnapshotMethods(aggregateType);
+			return snapshotMethods.RestoreMethod;
+		}
+
+		private static SnapshotMethods getSnapshotMethods(Type aggregateType)
+		{
+			Type snapshotInterfaceType = aggregateType.GetSnapshotInterfaceType();
+			if (snapshotInterfaceType != null)
+			{
+				SnapshotMethods snapshotMethods;
+				if (!SnapshotCreateMethods.TryGetValue(snapshotInterfaceType, out snapshotMethods))
+				{
+					MethodInfo createMethod = snapshotInterfaceType.GetMethod("CreateSnapshot");
+					MethodInfo restoreMethod = snapshotInterfaceType.GetMethod("RestoreFromSnapshot");
+					snapshotMethods = new SnapshotMethods(createMethod, restoreMethod);
+					SnapshotCreateMethods[snapshotInterfaceType] = snapshotMethods;
+				}
+				return snapshotMethods;
+			}
+			return SnapshotMethods.NotSnapshot;
+		}
+
+		private class SnapshotMethods
+		{
+			public static readonly SnapshotMethods NotSnapshot = new SnapshotMethods(null, null);
+
+			public SnapshotMethods(MethodInfo createMethod, MethodInfo restoreMethod)
+			{
+				CreateMethod = createMethod;
+				RestoreMethod = restoreMethod;
+			}
+
+			public MethodInfo CreateMethod { get; private set; }
+			public MethodInfo RestoreMethod { get; private set; }
+		}
+	}
 }

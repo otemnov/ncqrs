@@ -14,5 +14,7 @@ namespace Ncqrs.Eventing.Sourcing.Snapshotting
         /// <param name="aggregateRoot">Aggregate root.</param>
         /// <returns></returns>
         bool ShouldCreateSnapshot(AggregateRoot aggregateRoot);
+
+	    bool SupportsSnapshot(Type aggregateRootType);
     }
 }

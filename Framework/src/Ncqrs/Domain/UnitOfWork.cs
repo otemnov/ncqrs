@@ -69,12 +69,15 @@ namespace Ncqrs.Domain
             long maxVersion = lastKnownRevision.HasValue ? lastKnownRevision.Value : long.MaxValue;
             Snapshot snapshot = null;
             long minVersion = long.MinValue;
-            snapshot = _snapshotStore.GetSnapshot(eventSourceId, maxVersion);
-            if (snapshot != null)
-            {
-                minVersion = snapshot.Version + 1;
-            }
-            var eventStream = _eventStore.ReadFrom(eventSourceId, minVersion, maxVersion);
+	        if (_snapshottingPolicy.SupportsSnapshot(aggregateRootType))
+	        {
+		        snapshot = _snapshotStore.GetSnapshot(eventSourceId, maxVersion);
+		        if (snapshot != null)
+		        {
+			        minVersion = snapshot.Version + 1;
+		        }
+	        }
+	        var eventStream = _eventStore.ReadFrom(eventSourceId, minVersion, maxVersion);
             return _repository.Load(aggregateRootType, snapshot, eventStream);
         }
 

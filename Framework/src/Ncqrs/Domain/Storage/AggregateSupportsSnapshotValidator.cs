@@ -7,9 +7,8 @@ namespace Ncqrs.Domain.Storage
     {
         public bool DoesAggregateSupportsSnapshot(Type aggregateType, Type snapshotType)
         {
-            var memType = aggregateType.GetSnapshotInterfaceType();
-
-            var expectedType = typeof(ISnapshotable<>).MakeGenericType(snapshotType);
+            Type memType = aggregateType.GetSnapshotInterfaceType();
+            Type expectedType = typeof(ISnapshotable<>).MakeGenericType(snapshotType);
             return memType == expectedType;
         }
     }

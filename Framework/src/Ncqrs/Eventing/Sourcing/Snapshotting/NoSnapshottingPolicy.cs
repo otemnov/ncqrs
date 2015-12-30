@@ -1,4 +1,5 @@
-﻿using Ncqrs.Domain;
+﻿using System;
+using Ncqrs.Domain;
 
 namespace Ncqrs.Eventing.Sourcing.Snapshotting
 {
@@ -11,5 +12,10 @@ namespace Ncqrs.Eventing.Sourcing.Snapshotting
         {
             return false;
         }
+
+	    public bool SupportsSnapshot(Type aggregateRootType)
+	    {
+		    return false;
+	    }
     }
 }

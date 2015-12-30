@@ -188,7 +188,7 @@ namespace Ncqrs.Eventing.Sourcing
 
 		private string getKey(Type eventType, Guid entityId)
 		{
-			return eventType + entityId.ToString();
+			return entityId + eventType.Name;
 		}
 
 		internal protected void ApplyEvent(object evnt)

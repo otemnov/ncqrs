@@ -1,4 +1,5 @@
-﻿using Ncqrs.Domain;
+﻿using System;
+using Ncqrs.Domain;
 
 namespace Ncqrs.Eventing.Sourcing.Snapshotting
 {
@@ -21,14 +22,22 @@ namespace Ncqrs.Eventing.Sourcing.Snapshotting
 
         public bool ShouldCreateSnapshot(AggregateRoot aggregateRoot)
         {
-            for (var i = aggregateRoot.InitialVersion + 1; i <= aggregateRoot.Version; i++)
-            {
-                if (i % _snapshotIntervalInEvents == 0)
-                {
-                    return true;
-                }
-            }
-            return false;
+	        if (SupportsSnapshot(aggregateRoot.GetType()))
+	        {
+		        for (var i = aggregateRoot.InitialVersion + 1; i <= aggregateRoot.Version; i++)
+		        {
+			        if (i%_snapshotIntervalInEvents == 0)
+			        {
+				        return true;
+			        }
+		        }
+	        }
+	        return false;
         }
+
+	    public bool SupportsSnapshot(Type aggregateRootType)
+	    {
+			return aggregateRootType.GetSnapshotInterfaceType() != null;
+	    }
     }
 }
