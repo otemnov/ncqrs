@@ -13,6 +13,7 @@ namespace Ncqrs.Eventing
         private readonly Guid _eventIdentifier;
         private readonly DateTime _eventTimeStamp;
         private readonly Guid _eventSourceId;
+        private readonly Type _eventSourceType;
         private readonly long _initialVersionOfEventSource;
         private readonly Version _eventVersion;
         private Guid _commitId;
@@ -61,6 +62,15 @@ namespace Ncqrs.Eventing
         }
 
         /// <summary>
+        /// Gets the type of the event source that caused the event.
+        /// </summary>
+        /// <value>The type of the event source that caused the event.</value>
+        public Type EventSourceType
+        {
+            get { return _eventSourceType; }
+        }
+
+        /// <summary>
         /// Gets the event sequence number.
         /// </summary>
         /// <remarks>
@@ -85,12 +95,13 @@ namespace Ncqrs.Eventing
             _commitId = streamCommitId;
         }
 
-        public UncommittedEvent(Guid eventIdentifier, Guid eventSourceId, long eventSequence, long initialVersionOfEventSource, DateTime eventTimeStamp, object payload, Version eventVersion)            
+        public UncommittedEvent(Guid eventIdentifier, Guid eventSourceId, Type eventSourceType, long eventSequence, long initialVersionOfEventSource, DateTime eventTimeStamp, object payload, Version eventVersion)            
         {
             _payload = payload;
             _eventVersion = eventVersion;
             _initialVersionOfEventSource = initialVersionOfEventSource;
             _eventSourceId = eventSourceId;
+            _eventSourceType = eventSourceType;
             _eventSequence = eventSequence;
             _eventIdentifier = eventIdentifier;
             _eventTimeStamp = eventTimeStamp;

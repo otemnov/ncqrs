@@ -41,7 +41,7 @@ namespace Ncqrs.Spec
                 var result = new UncommittedEventStream(commitId);
                 foreach (var evnt in _events)
                 {
-                    var uncommittedEvent = new UncommittedEvent(Guid.NewGuid(), id, sequence, initialVersion, DateTime.UtcNow,
+                    var uncommittedEvent = new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequence, initialVersion, DateTime.UtcNow,
                                                             evnt, new Version(1, 0));
                     result.Append(uncommittedEvent);
                     sequence++;

@@ -78,17 +78,17 @@ namespace Ncqrs.Eventing.Storage.RavenDB.Tests
 
             var events = new UncommittedEventStream(Guid.NewGuid());
 
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo",
-                                                                                                                                   35),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo",
+                                                                                                                                         35),
                                                new Version(1, 0)));
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
-                                                                                                              "Name" + sequenceCounter),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
+                                                                                                                    "Name" + sequenceCounter),
                                                new Version(1, 0)));
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
-                                                                                                              "Name" + sequenceCounter),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
+                                                                                                                    "Name" + sequenceCounter),
                                                new Version(1, 0)));
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
-                                                                                                              "Name" + sequenceCounter),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
+                                                                                                                    "Name" + sequenceCounter),
                                                new Version(1, 0)));
                              
 
@@ -105,11 +105,11 @@ namespace Ncqrs.Eventing.Storage.RavenDB.Tests
 
             var events = new UncommittedEventStream(Guid.NewGuid());
 
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo",
-                                                                                                                                   35),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo",
+                                                                                                                                         35),
                                                new Version(1, 0)));
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
-                                                                                                              "Name" + sequenceCounter),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
+                                                                                                                    "Name" + sequenceCounter),
                                                new Version(1, 0)));
             
             targetStore.Store(events);
@@ -128,17 +128,17 @@ namespace Ncqrs.Eventing.Storage.RavenDB.Tests
 
             var events = new UncommittedEventStream(Guid.NewGuid());
 
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo",
-                                                                                                                                   35),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo",
+                                                                                                                                         35),
                                                new Version(1, 0)));
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
-                                                                                                              "Name" + sequenceCounter),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
+                                                                                                                    "Name" + sequenceCounter),
                                                new Version(1, 0)));
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
-                                                                                                              "Name" + sequenceCounter),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
+                                                                                                                    "Name" + sequenceCounter),
                                                new Version(1, 0)));
-            events.Append(new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
-                                                                                                              "Name" + sequenceCounter),
+            events.Append(new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerNameChanged(
+                                                                                                                    "Name" + sequenceCounter),
                                                new Version(1, 0)));
 
             targetStore.Store(events);

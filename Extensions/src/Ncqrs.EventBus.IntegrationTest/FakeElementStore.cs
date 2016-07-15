@@ -25,7 +25,7 @@ namespace Ncqrs.EventBus.IntegrationTest
                 for (int i = 0; i < count; i++)
                 {
                     _fetched++;
-                    var evnt = new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), _fetched, _fetched, DateTime.Now, new object(),
+                    var evnt = new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), typeof(object), _fetched, _fetched, DateTime.Now, new object(),
                                                     new Version(1, 0));
                     yield return new SourcedEventProcessingElement(evnt);
                 }

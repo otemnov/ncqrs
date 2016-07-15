@@ -86,25 +86,25 @@ namespace Ncqrs.Eventing.Storage.MongoDB.Tests.Fakes
             {
                 new UncommittedEvent
                 (
-                    Guid.NewGuid(), theEventSourceId, sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
+                    Guid.NewGuid(), theEventSourceId, typeof(object), sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
                     new CustomerCreatedEvent(Guid.NewGuid(), theEventSourceId, sequenceCounter, DateTime.UtcNow, "Foo",35),
                     theVersion
                 ),
                 new UncommittedEvent
                 (
-                    Guid.NewGuid(), theEventSourceId, sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
+                    Guid.NewGuid(), theEventSourceId, typeof(object), sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
                     new CustomerNameChanged(Guid.NewGuid(), theEventSourceId, sequenceCounter, DateTime.UtcNow, "Name"+sequenceCounter),
                     theVersion
                 ),
                 new UncommittedEvent
                 (
-                    Guid.NewGuid(), theEventSourceId, sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
+                    Guid.NewGuid(), theEventSourceId, typeof(object), sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
                     new CustomerNameChanged(Guid.NewGuid(), theEventSourceId, sequenceCounter, DateTime.UtcNow, "Name"+sequenceCounter),
                     theVersion
                 ),
                 new UncommittedEvent
                 (
-                    Guid.NewGuid(), theEventSourceId, sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
+                    Guid.NewGuid(), theEventSourceId, typeof(object), sequenceCounter++, theInitialEventSourceVersion, DateTime.Now, 
                     new CustomerNameChanged(Guid.NewGuid(), theEventSourceId, sequenceCounter, DateTime.UtcNow, "Name"+sequenceCounter),
                     theVersion
                 ),

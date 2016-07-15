@@ -47,7 +47,7 @@ namespace Ncqrs.EventBus.IntegrationTest
             for (int i = 0; i < 1000; i++)
             {
                 var uncommittedEventStream = new UncommittedEventStream(Guid.NewGuid());
-                uncommittedEventStream.Append(new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), i, i, DateTime.Now, new object(), new Version(1, 0)));                
+                uncommittedEventStream.Append(new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), typeof(object), i, i, DateTime.Now, new object(), new Version(1, 0)));                
                 eventStore.Store(uncommittedEventStream);
             }
         }
@@ -64,7 +64,7 @@ namespace Ncqrs.EventBus.IntegrationTest
                 Guid rootId = aggregateRoots[random.Next(aggregateRootCount)];
 
                 var uncommittedEventStream = new UncommittedEventStream(Guid.NewGuid());
-                uncommittedEventStream.Append(new UncommittedEvent(Guid.NewGuid(), rootId, i, i, DateTime.Now, new object(), new Version(1, 0)));                
+                uncommittedEventStream.Append(new UncommittedEvent(Guid.NewGuid(), rootId, typeof(object), i, i, DateTime.Now, new object(), new Version(1, 0)));                
             }
         }
     }

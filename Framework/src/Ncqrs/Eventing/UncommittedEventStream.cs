@@ -50,7 +50,7 @@ namespace Ncqrs.Eventing
 
         private void UpdateEventSourceInformation(UncommittedEvent evnt)
         {
-            var newInformation = new EventSourceInformation(evnt.EventSourceId, evnt.InitialVersionOfEventSource, evnt.EventSequence);
+            var newInformation = new EventSourceInformation(evnt.EventSourceId, evnt.EventSourceType, evnt.InitialVersionOfEventSource, evnt.EventSequence);
             _eventSourceInformation[evnt.EventSourceId] = newInformation;
         }
 

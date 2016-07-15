@@ -202,7 +202,7 @@ namespace Ncqrs.Eventing.Sourcing
 			{
 				sourcedEvent.ClaimEvent(EventSourceId, eventSequence);
 			}
-			var wrappedEvent = new UncommittedEvent(_idGenerator.GenerateNewId(), EventSourceId, eventSequence, _initialVersion, DateTime.UtcNow, evnt, eventVersion);
+			var wrappedEvent = new UncommittedEvent(_idGenerator.GenerateNewId(), EventSourceId, GetType(), eventSequence, _initialVersion, DateTime.UtcNow, evnt, eventVersion);
 
 
 			Log.DebugFormat("Handling event {0} in event source {1}", wrappedEvent, this);

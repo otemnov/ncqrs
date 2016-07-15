@@ -21,7 +21,7 @@ namespace Ncqrs.Config.Windsor.Tests
         [SetUp]
         public void SetUp()
         {
-            _testEvent = new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), 1, 1, DateTime.UtcNow, new FakeEvent(),
+            _testEvent = new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), typeof(object), 1, 1, DateTime.UtcNow, new FakeEvent(),
                                               new Version(1, 0));
             _handler1 = MockRepository.GenerateMock<IEventHandler<FakeEvent>>();
             _handler2 = MockRepository.GenerateMock<IEventHandler<FakeEventBase>>();

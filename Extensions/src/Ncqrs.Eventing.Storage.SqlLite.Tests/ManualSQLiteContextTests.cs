@@ -48,13 +48,13 @@ namespace Ncqrs.Eventing.Storage.SQLite.Tests
             var id = Guid.NewGuid();
             var stream = new UncommittedEventStream(Guid.NewGuid());
             stream.Append(
-                new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo", 35),
+                new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow, new CustomerCreatedEvent("Foo", 35),
                                      new Version(1, 0)));
             stream.Append(
-                new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow,
+                new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow,
                                      new CustomerNameChanged("Name" + sequenceCounter), new Version(1, 0)));
             stream.Append(
-                new UncommittedEvent(Guid.NewGuid(), id, sequenceCounter++, 0, DateTime.UtcNow,
+                new UncommittedEvent(Guid.NewGuid(), id, typeof(object), sequenceCounter++, 0, DateTime.UtcNow,
                                      new CustomerNameChanged("Name" + sequenceCounter), new Version(1, 0)));
             _store.Store(stream);
             _transaction.Commit();
@@ -68,7 +68,7 @@ namespace Ncqrs.Eventing.Storage.SQLite.Tests
 
             var stream = new UncommittedEventStream(Guid.NewGuid());
             stream.Append(
-                new UncommittedEvent(Guid.NewGuid(), id, 1, 0, utcNow, new CustomerCreatedEvent("Foo", 35),
+                new UncommittedEvent(Guid.NewGuid(), id, typeof(object), 1, 0, utcNow, new CustomerCreatedEvent("Foo", 35),
                                      new Version(1, 0)));
 
             _store.Store(stream);

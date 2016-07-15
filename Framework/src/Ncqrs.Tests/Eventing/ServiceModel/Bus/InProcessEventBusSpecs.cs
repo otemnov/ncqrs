@@ -36,7 +36,7 @@ namespace Ncqrs.Tests.Eventing.ServiceModel.Bus
         
         private static IPublishableEvent CreateAEvent()
         {
-            return new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), 0, 0, DateTime.UtcNow, new AEvent(), new Version(1, 0));
+            return new UncommittedEvent(Guid.NewGuid(), Guid.NewGuid(), typeof(object), 0, 0, DateTime.UtcNow, new AEvent(), new Version(1, 0));
         }
 
         private static IPublishableEvent CreateADomainEvent()
