@@ -83,7 +83,7 @@ namespace Ncqrs.Eventing.Storage.MongoDB
             return null;
         }
 
-        public CommittedEventStream ReadFrom(Guid id, long minVersion, long maxVersion = 0)
+		public CommittedEventStream ReadFrom(Guid id, Type aggregateRootType, long minVersion, long maxVersion = 0)
         {
             //// TODO: We can select events above maxversion since a commit can have the correct FromVersion, but contain events higher then max version.
             //var query = Query.And(Query.EQ("SourceId", id), Query.GTE("FromVersion", minVersion));

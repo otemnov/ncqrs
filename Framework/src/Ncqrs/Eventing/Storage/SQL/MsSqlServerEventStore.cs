@@ -239,11 +239,12 @@ namespace Ncqrs.Eventing.Storage.SQL
         /// <remarks>
         /// Returned event stream does not contain snapshots. This method is used when snapshots are stored in a separate store.
         /// </remarks>
-        /// <param name="id">The id of the event source that owns the events.</param>
+		/// <param name="id">The id of the event source that owns the events.</param>
+		/// <param name="aggregateRootType">The type of the event source that owns the events.</param>
         /// <param name="minVersion">The minimum version number to be read.</param>
         /// <param name="maxVersion">The maximum version number to be read</param>
         /// <returns>All the events from the event source between specified version numbers.</returns>
-        public CommittedEventStream ReadFrom(Guid id, long minVersion, long maxVersion)
+		public CommittedEventStream ReadFrom(Guid id, Type aggregateRootType, long minVersion, long maxVersion)
         {
             var events = new List<CommittedEvent>();
 

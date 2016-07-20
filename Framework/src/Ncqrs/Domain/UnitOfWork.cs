@@ -77,7 +77,7 @@ namespace Ncqrs.Domain
 			        minVersion = snapshot.Version + 1;
 		        }
 	        }
-	        var eventStream = _eventStore.ReadFrom(eventSourceId, minVersion, maxVersion);
+	        var eventStream = _eventStore.ReadFrom(eventSourceId, aggregateRootType, minVersion, maxVersion);
             return _repository.Load(aggregateRootType, snapshot, eventStream);
         }
 

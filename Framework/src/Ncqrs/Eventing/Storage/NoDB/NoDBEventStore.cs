@@ -21,7 +21,7 @@ namespace Ncqrs.Eventing.Storage.NoDB
 
         #region IEventStore Members
 
-        public CommittedEventStream ReadFrom(Guid id, long minVersion, long maxVersion)
+		public CommittedEventStream ReadFrom(Guid id, Type aggregateRootType, long minVersion, long maxVersion)
         {
             var events = new List<CommittedEvent>();
             FileInfo file = id.GetEventStoreFileInfo(_path);

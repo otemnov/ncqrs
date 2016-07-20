@@ -154,7 +154,7 @@ namespace Ncqrs.Tests.Eventing.Storage.SQL
 
             targetStore.Store(eventStream);
 
-            var eventsFromStore = targetStore.ReadFrom(theEventSourceId, long.MinValue, long.MaxValue);
+			var eventsFromStore = targetStore.ReadFrom(theEventSourceId, typeof(object), long.MinValue, long.MaxValue);
             eventsFromStore.Count().Should().Be(eventStream.Count());
 
             for (int i = 0; i < eventsFromStore.Count(); i++)
@@ -182,7 +182,7 @@ namespace Ncqrs.Tests.Eventing.Storage.SQL
 
             targetStore.Store(eventStream);
 
-            var restoredEvent = targetStore.ReadFrom(theEventSourceId, long.MinValue, long.MaxValue).Single();
+			var restoredEvent = targetStore.ReadFrom(theEventSourceId, typeof(object), long.MinValue, long.MaxValue).Single();
 
             var payload = (AccountNameChangedEvent)restoredEvent.Payload;
             payload.EntityId.Should().Be(theEntityId);
@@ -229,7 +229,7 @@ namespace Ncqrs.Tests.Eventing.Storage.SQL
                         concurrencyExceptionThrown = true;
                     }
 
-                    targetStore.ReadFrom(theEventSourceId, long.MinValue, long.MaxValue);
+					targetStore.ReadFrom(theEventSourceId, typeof(object), long.MinValue, long.MaxValue);
 
                 });
             }

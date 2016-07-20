@@ -14,7 +14,7 @@ namespace Ncqrs.Eventing.Storage.NoDB.Tests.EventStoreTests
         {
             BaseSetup();
 
-            _returnedEvents = EventStore.ReadFrom(EventSourceId, long.MinValue, long.MaxValue).Select(x => x.Payload).ToArray();
+			_returnedEvents = EventStore.ReadFrom(EventSourceId, typeof(object), long.MinValue, long.MaxValue).Select(x => x.Payload).ToArray();
         }
 
         [Test]
@@ -26,7 +26,7 @@ namespace Ncqrs.Eventing.Storage.NoDB.Tests.EventStoreTests
         [Test]
         public void it_should_return_an_empty_result_for_a_non_existant_event_source()
         {
-            Assert.That(EventStore.ReadFrom(Guid.NewGuid(), long.MinValue, long.MaxValue), Is.Empty);
+			Assert.That(EventStore.ReadFrom(Guid.NewGuid(), typeof(object), long.MinValue, long.MaxValue), Is.Empty);
         }
     }
 }

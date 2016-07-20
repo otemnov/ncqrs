@@ -33,7 +33,7 @@ namespace Ncqrs.Eventing.Storage
                 : result;
         }
 
-        public CommittedEventStream ReadFrom(Guid id, long minVersion, long maxVersion)
+		public CommittedEventStream ReadFrom(Guid id, Type aggregateRootType, long minVersion, long maxVersion)
         {
             Queue<CommittedEvent> events;
             
