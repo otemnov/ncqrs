@@ -142,7 +142,7 @@ namespace Ncqrs.Eventing.Sourcing
 		{
 			Contract.Requires<ArgumentNullException>(handler != null, "The handler cannot be null.");
 			string key = getKey(handler);
-			_eventHandlers.Add(key, handler);
+			_eventHandlers[key] = handler;
 		}
 
 		protected virtual void HandleEvent(object evnt)
