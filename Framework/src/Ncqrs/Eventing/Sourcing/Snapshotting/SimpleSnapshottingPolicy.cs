@@ -24,6 +24,11 @@ namespace Ncqrs.Eventing.Sourcing.Snapshotting
         {
 	        if (SupportsSnapshot(aggregateRoot.GetType()))
 	        {
+		        if (!aggregateRoot.RestoredFromSnapshot && aggregateRoot.Version > _snapshotIntervalInEvents)
+		        {
+			        return true;
+		        }
+
 		        for (var i = aggregateRoot.InitialVersion + 1; i <= aggregateRoot.Version; i++)
 		        {
 			        if (i%_snapshotIntervalInEvents == 0)
