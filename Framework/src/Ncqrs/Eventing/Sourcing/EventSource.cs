@@ -36,13 +36,11 @@ namespace Ncqrs.Eventing.Sourcing
 		/// <value>
 		/// An <see cref="long"/> representing the current version of this aggregate root.
 		/// </value>
-		public long Version
-		{
-			get
-			{
-				return _currentVersion;
-			}
-		}
+		public long Version => _currentVersion;
+
+		[field: NonSerialized] 
+		public bool RestoredFromSnapshot { get; private set; }
+
 		[NonSerialized]
 		private long _initialVersion;
 
@@ -92,7 +90,7 @@ namespace Ncqrs.Eventing.Sourcing
 		{
 			Contract.Requires<ArgumentNullException>(snapshot != null, "The snapshot cannot be null.");
 			Log.DebugFormat("Initializing event source {0} from snapshot (version {1}).", snapshot.EventSourceId, snapshot.Version);
-
+			RestoredFromSnapshot = true;
 			_eventSourceId = snapshot.EventSourceId;
 			_initialVersion = _currentVersion = snapshot.Version;
 		}
