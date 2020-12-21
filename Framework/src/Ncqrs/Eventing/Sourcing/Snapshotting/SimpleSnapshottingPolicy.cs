@@ -24,7 +24,7 @@ namespace Ncqrs.Eventing.Sourcing.Snapshotting
         {
 	        if (SupportsSnapshot(aggregateRoot.GetType()))
 	        {
-		        if (!aggregateRoot.RestoredFromSnapshot && aggregateRoot.Version > _snapshotIntervalInEvents)
+		        if (!aggregateRoot.RestoredFromSnapshot)
 		        {
 			        return true;
 		        }

@@ -3,6 +3,28 @@ using System.Runtime.Serialization;
 
 namespace Ncqrs.Eventing.Storage
 {
+	public class SnapshotGenerationConcurrencyException : Exception
+	{
+		private readonly Guid _eventSourceId;
+		public SnapshotGenerationConcurrencyException(Guid eventSourceId)
+			: base("A parallel process is already generating snapshot for the root. Can't accept command till the end of the process.")
+		{
+			_eventSourceId = eventSourceId;
+		}
+
+		protected SnapshotGenerationConcurrencyException(SerializationInfo info, StreamingContext context)
+			: base(info, context)
+		{
+			_eventSourceId = (Guid) info.GetValue("EventSourceId", typeof (Guid));
+		}
+
+		public override void GetObjectData(SerializationInfo info, StreamingContext context)
+		{
+			base.GetObjectData(info, context);
+			info.AddValue("EventSourceId", _eventSourceId);
+		}
+	}
+
     /// <summary>
     /// Occurs when there is already a newer version of the event source stored in the event store.
     /// </summary>

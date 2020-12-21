@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Reflection;
@@ -25,6 +26,8 @@ namespace Ncqrs.Domain
         private readonly ISnapshotStore _snapshotStore;
         private readonly IEventBus _eventBus;
         private readonly ISnapshottingPolicy _snapshottingPolicy;
+        private static readonly ConcurrentDictionary<Guid, bool> ShapshotGenInProgress = new ConcurrentDictionary<Guid, bool>();
+        private readonly List<Guid> _generatingSnapshotsFor = new List<Guid>(2);
 
         public UnitOfWork(Guid commandId, IDomainRepository domainRepository, IEventStore eventStore, ISnapshotStore snapshotStore, IEventBus eventBus, ISnapshottingPolicy snapshottingPolicy) : base(commandId)
         {
@@ -76,6 +79,16 @@ namespace Ncqrs.Domain
 		        {
 			        minVersion = snapshot.Version + 1;
 		        }
+		        else
+		        {
+			        if (ShapshotGenInProgress.TryAdd(eventSourceId, true))
+			        {
+				        _generatingSnapshotsFor.Add(eventSourceId);
+			        }
+			        {
+				        throw new SnapshotGenerationConcurrencyException(eventSourceId);
+			        }
+		        }
 	        }
 	        var eventStream = _eventStore.ReadFrom(eventSourceId, aggregateRootType, minVersion, maxVersion);
             return _repository.Load(aggregateRootType, snapshot, eventStream);
@@ -110,15 +123,29 @@ namespace Ncqrs.Domain
 
         private void TryCreateCreateSnapshot(AggregateRoot savedInstance)
         {
-            if (_snapshottingPolicy.ShouldCreateSnapshot(savedInstance))
-            {
-                var snapshot = _repository.TryTakeSnapshot(savedInstance);
-                if (snapshot != null)
-                {
-                    _snapshotStore.SaveShapshot(snapshot);
-                }
-            }
+	        if (!_snapshottingPolicy.ShouldCreateSnapshot(savedInstance))
+	        {
+		        return;
+	        }
+
+	        var snapshot = _repository.TryTakeSnapshot(savedInstance);
+	        if (snapshot == null)
+	        {
+		        return;
+	        }
+
+	        _snapshotStore.SaveShapshot(snapshot);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+	        foreach (var id in _generatingSnapshotsFor)
+	        {
+		        ShapshotGenInProgress.TryRemove(id, out _);
+	        }
+	        base.Dispose(disposing);
+        }
+
 
         /// <summary>
         /// Registers the dirty.
