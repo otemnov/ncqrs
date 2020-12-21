@@ -84,14 +84,20 @@ namespace Ncqrs.Domain
 			        if (ShapshotGenInProgress.TryAdd(eventSourceId, true))
 			        {
 				        _generatingSnapshotsFor.Add(eventSourceId);
-			        }
+			        } else
 			        {
 				        throw new SnapshotGenerationConcurrencyException(eventSourceId);
 			        }
 		        }
 	        }
 	        var eventStream = _eventStore.ReadFrom(eventSourceId, aggregateRootType, minVersion, maxVersion);
-            return _repository.Load(aggregateRootType, snapshot, eventStream);
+	        var aggregateRoot = _repository.Load(aggregateRootType, snapshot, eventStream);
+	        bool generating;
+	        if (aggregateRoot == null && ShapshotGenInProgress.TryRemove(eventSourceId, out generating))
+	        {
+		        _generatingSnapshotsFor.Remove(eventSourceId);
+	        }
+	        return aggregateRoot;
         }
 
         /// <summary>
@@ -141,7 +147,8 @@ namespace Ncqrs.Domain
         {
 	        foreach (var id in _generatingSnapshotsFor)
 	        {
-		        ShapshotGenInProgress.TryRemove(id, out _);
+		        bool __;
+		        ShapshotGenInProgress.TryRemove(id, out __);
 	        }
 	        base.Dispose(disposing);
         }
